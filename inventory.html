@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventory — COFFEE & BLOOM Admin</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+body, html {
+  height: 100%;
+  font-family:'Poppins',sans-serif;
+  background:#fff8f5 url('images/background.png') no-repeat center center;
+  background-size:cover;
+  color:#6b4226;
+  overflow: hidden;
+  display: flex;
+}
+.sidebar {
+  width:260px; background:#fff; border-right:1px solid #e0cbbf;
+  padding:2rem 1rem; display:flex; flex-direction:column; align-items:center;
+  box-shadow:2px 0 15px rgba(0,0,0,0.05); position:fixed; height:100%;
+}
+.sidebar img{ width:80px; height:80px; border-radius:50%; object-fit:cover; }
+.sidebar h2{ margin-top:0.5rem; font-size:1.3rem; color:#ff7043; }
+.sidebar p{ font-size:0.9rem; color:#999; margin-bottom:2rem; text-align:center; }
+.sidebar .nav{ list-style:none; width:100%; }
+.sidebar .nav li{ margin:0.3rem 0; }
+.sidebar .nav a{
+  display:flex; align-items:center; text-decoration:none; color:#6b4226;
+  padding:0.7rem 1rem; border-radius:10px; transition:0.3s;
+}
+.sidebar .nav a i{ margin-right:10px; font-size:1.2rem; }
+.sidebar .nav a.active, .sidebar .nav a:hover{
+  background:#ffe1d2; color:#ff7043; font-weight:600;
+}
+main{
+  flex:1; margin-left:260px; padding:2rem;
+  overflow-y:auto; max-height:100vh;
+}
+header{
+  background: linear-gradient(135deg,#FFCBA4,#FF9F7A);
+  color:#fff; padding:1rem 1.5rem;
+  border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  margin-bottom:2rem; display:flex; justify-content:space-between; align-items:center;
+}
+header h1{ font-size:1.5rem; }
+.refresh-indicator{
+  font-size:0.9rem; background: rgba(255,255,255,0.2); padding:0.4rem 0.8rem;
+  border-radius:10px; animation:pulse 2s infinite;
+}
+@keyframes pulse{ 0%,100%{opacity:0.6;}50%{opacity:1;} }
+.inventory-container{
+  display:flex; flex-wrap:wrap; gap:1rem; justify-content:flex-start;
+  padding-bottom:2rem;
+}
+.card{
+  background:#fff; border-radius:20px;
+  padding:1rem; width:230px; box-shadow:0 10px 25px rgba(255,159,122,0.15);
+  display:flex; flex-direction:column; align-items:center; transition:0.3s;
+}
+.card:hover{ transform:translateY(-4px); box-shadow:0 15px 35px rgba(255,140,105,0.25); }
+.card img{ width:100%; height:160px; object-fit:cover; border-radius:12px; }
+.card h3{ margin:0.5rem 0; font-size:1rem; text-align:center; }
+.card p{ font-size:0.85rem; color:#666; text-align:center; margin:0.2rem 0; }
+.card .price{ font-weight:bold; color:#ff7043; margin-top:0.5rem; }
+.card input{ width:60px; padding:0.3rem; border-radius:6px; border:1px solid #ccc; text-align:center; margin-top:0.3rem; }
+.card button{ margin-top:0.5rem; padding:5px 10px; border:none; border-radius:6px; background:#ff7043; color:#fff; cursor:pointer; transition:0.2s; }
+.card button:hover{ background:#f97b4d; }
+.stock-badges { margin-top:5px; display:flex; gap:5px; flex-wrap:wrap; justify-content:center; }
+.status-badge { padding:2px 6px; border-radius:6px; font-size:0.8rem; font-weight:600; color:#fff; }
+.status-instock { background-color:#28a745; }
+.status-pending { background-color:#ffc107; color:#000; }
+.status-rejected { background-color:#dc3545; }
+@media(max-width:768px){
+  body{ flex-direction:column; }
+  .sidebar{ width:100%; flex-direction:row; justify-content:space-around; padding:1rem; }
+  main{ margin-left:0; padding:1rem; }
+  .card{ width:100%; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <img src="images/admin-avatar.png" alt="Admin Avatar">
+  <h2>Admin</h2>
+  <p>Administrator</p>
+  <ul class="nav">
+    <li><a href="admin.html"><i class="ri-dashboard-line"></i> Dashboard</a></li>
+    <li><a href="adminorder.html"><i class="ri-shopping-bag-3-line"></i> Orders</a></li>
+    <li><a href="inventory.html" class="active"><i class="ri-archive-2-line"></i> Inventory</a></li>
+    <li><a href="suppliers.html"><i class="ri-truck-line"></i> Suppliers</a></li>
+    <li><a href="reports.html"><i class="ri-bar-chart-2-line"></i> Reports</a></li>
+    <li><a href="#" id="logoutLink"><i class="ri-logout-circle-line"></i> Logout</a></li>
+  </ul>
+</aside>
+
+<main>
+  <header>
+    <h1>Inventory Overview</h1>
+    <span class="refresh-indicator">Live updates 🔄</span>
+  </header>
+  <div class="inventory-container" id="inventoryContainer"></div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  const container = document.getElementById('inventoryContainer');
+
+  const allProducts = [
+    {name:"Nutella Cookie", img:"images/nutella-cookie.png"},
+    {name:"Creamy Bolognese", img:"images/creamy-bolognese.png"},
+    {name:"Spanish Latte", img:"images/spanish-latte.png"},
+    {name:"Flower + Any Coffee", img:"images/flower-coffee.png"},
+    {name:"Bouquet of Flower", img:"images/bouquet.png"},
+    {name:"Matcha Cookie", img:"images/matcha-cookie.png"},
+    {name:"Classic S’mores", img:"images/classic-smores.png"},
+    {name:"OG Chocolate Chip Cookie", img:"images/og-choc-chip.png"},
+    {name:"Aglio e Olio", img:"images/aglio-olio.png"},
+    {name:"Creamy Carbonara", img:"images/creamy-carbonara.png"},
+    {name:"Cappuccino", img:"images/cappuccino.png"},
+    {name:"Cafe Americano", img:"images/cafe-americano.png"},
+    {name:"Pure Matcha", img:"images/pure-matcha.png"},
+    {name:"Matcha Latte", img:"images/matcha-latte.png"},
+    {name:"Caramel Macchiato", img:"images/caramel-macchiato.png"},
+    {name:"Sea Salt Latte", img:"images/sea-salt-latte.png"},
+    {name:"Cloud Americano", img:"images/cloud-americano.png"},
+    {name:"Iced Cafe Americano", img:"images/iced-cafe-americano.png"}
+  ];
+
+  let stockData = JSON.parse(localStorage.getItem('productStock')) || {};
+  allProducts.forEach(p=>{
+    if(!stockData[p.name]) stockData[p.name] = { inStock:50, pending:0, rejected:0 };
+  });
+
+  localStorage.setItem('productStock', JSON.stringify(stockData));
+
+  function renderInventory(){
+    container.innerHTML = '';
+    allProducts.forEach((p,index)=>{
+      const data = stockData[p.name];
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <a href="${p.img}" target="_blank"><img src="${p.img}" alt="${p.name}"></a>
+        <h3>${p.name}</h3>
+        <div class="stock-badges">
+          <span class="status-badge status-instock">In Stock: ${data.inStock}</span>
+          <span class="status-badge status-pending">Pending: ${data.pending}</span>
+          <span class="status-badge status-rejected">Rejected: ${data.rejected}</span>
+        </div>
+        <p>In Stock: <input type="number" min="0" value="${data.inStock}" id="stock-${index}"></p>
+        <p>Pending: <input type="number" min="0" value="${data.pending}" id="pending-${index}"></p>
+        <p>Rejected: <input type="number" min="0" value="${data.rejected}" id="rejected-${index}"></p>
+        <button data-index="${index}" class="saveBtn">💾 Save</button>
+      `;
+      container.appendChild(card);
+    });
+
+    container.querySelectorAll('.saveBtn').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        const i = e.target.dataset.index;
+        const name = allProducts[i].name;
+        const inStock = parseInt(document.getElementById(`stock-${i}`).value) || 0;
+        const pending = parseInt(document.getElementById(`pending-${i}`).value) || 0;
+        const rejected = parseInt(document.getElementById(`rejected-${i}`).value) || 0;
+        stockData[name] = { inStock, pending, rejected };
+        localStorage.setItem('productStock', JSON.stringify(stockData));
+        renderInventory();
+        alert(`✅ Updated ${name}`);
+      });
+    });
+  }
+
+  renderInventory();
+
+  document.getElementById('logoutLink').addEventListener('click', e=>{
+    e.preventDefault();
+    localStorage.clear();
+    window.location.href='login.html';
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,854 @@
+/* =====================
+   Base Styles
+===================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Hero section with blurred background */
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 20px;
+  min-height: 100vh;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+/* Blurred hero background */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: url('images/bloom.png') no-repeat center center/cover;
+  background-size: cover;
+  filter: blur(8px);
+  z-index: -2;
+}
+
+/* Semi-transparent overlay for readability */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: -1;
+}
+
+/* Overlay for readability */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: -1;
+}
+
+/* =====================
+   Hero Section
+===================== */
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 20px;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.logo {
+  font-family: 'Great Vibes', cursive;
+  font-size: 4rem;
+  color: #6b4226;
+  margin-bottom: 10px;
+}
+
+.tagline {
+  font-size: 2rem;
+  color: #a55d2d;
+  margin-bottom: 30px;
+}
+
+.description {
+  max-width: 700px;
+  font-size: 1.2rem;
+  line-height: 2;
+  margin: 0 auto 40px;
+  color: #4a3f35;
+}
+
+.btn {
+  display: inline-block;
+  background: #a55d2d;
+  color: #fff;
+  padding: 12px 30px;
+  font-weight: 600;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: #6b4226;
+  transform: translateY(-3px);
+}
+
+/* =====================
+   About Section with Background
+===================== */
+.about {
+  padding: 80px 20px;
+  text-align: center;
+  background: url('images/our.png') no-repeat center center/cover;
+  position: relative;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* Overlay for readability */
+.about::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* dark overlay */
+  z-index: 0;
+}
+
+.about h2,
+.about p {
+  position: relative; /* above overlay */
+  z-index: 1;
+}
+
+.about h2 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.about p {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #f5f5f5;
+}
+
+/* =====================
+   Footer
+===================== */
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+  color: #555;
+  background: rgba(255, 255, 255, 0.8);
+  position: relative;
+}
+
+/* =====================
+   Responsive
+===================== */
+@media (max-width: 768px) {
+  .logo {
+    font-size: 3rem;
+  }
+  .tagline {
+    font-size: 1.2rem;
+  }
+  .description, .about p {
+    font-size: 1rem;
+  }
+  .about h2 {
+    font-size: 2.2rem;
+  }
+}
+
+.navbar .navbar-container {
+  display: flex;
+  justify-content: center; /* center the whole navbar content */
+  align-items: center;
+  gap: 40px; /* space between logo and links */
+  padding: 20px 30px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Logo slightly left */
+.logo-link {
+  margin-right: 20px; /* nudges logo slightly left of center */
+}
+
+.logo-img {
+  height: 50px; 
+  width: auto;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 20px; /* spacing between links */
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #6b4226;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #a55d2d;
+  transform: translateY(-2px);
+}
+
+/* Navbar background blur */
+.navbar::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: url('images/our.png') no-repeat center center/cover;
+  background-size: cover;
+  filter: blur(8px);
+  z-index: -2;
+}
+
+.navbar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  z-index: -1;
+}
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+  .navbar .navbar-container {
+    flex-direction: column;
+    align-items: flex-start; /* logo top-left */
+  }
+  .nav-links {
+    flex-direction: column;
+    margin-top: 10px;
+    width: 100%;
+  }
+  .nav-links li {
+    margin: 8px 0;
+  }
+}
+
+/* =====================
+   Best Sellers Section
+===================== */
+.best-sellers {
+  text-align: center;
+  padding: 80px 20px;
+  position: relative; /* needed for ::before and ::after */
+  overflow: hidden;
+  color: #6b4226;
+}
+
+/* Background Bloom Image (blurred) */
+.best-sellers::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('images/bloom.png'); /* make sure this path is correct */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(8px);
+  z-index: -2;
+}
+
+/* Overlay for readability */
+.best-sellers::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 248, 245, 0.6);
+  z-index: -1;
+}
+
+/* Content above background */
+.best-sellers h2,
+.products,
+.btn-shop {
+  position: relative;
+  z-index: 1;
+}
+
+/* Section Title */
+.best-sellers h2 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3rem;
+  margin-bottom: 50px;
+  color: #6b4226;
+}
+
+/* Products Layout */
+.products {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.product-card {
+  background: rgba(255, 255, 255, 0.9); /* semi-transparent card */
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 20px;
+  width: 250px;
+  text-align: center;
+  color: #6b4226;
+}
+
+.product-img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.product-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+/* Shop Now Button */
+.btn-shop {
+  display: inline-block;
+  padding: 12px 30px;
+  background: #a55d2d;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-shop:hover {
+  background: #6b4226;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .products {
+    flex-direction: column;
+    align-items: center;
+  }
+  .product-card {
+    width: 80%; /* smaller cards on mobile */
+  }
+}
+
+
+/* =====================
+   Navbar
+===================== */
+.navbar {
+  width: 100%;
+  background-color: rgba(255, 248, 245, 0.95); /* light overlay for readability */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  font-family: 'Poppins', sans-serif;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 50px;
+  width: auto;
+}
+
+/* Navigation Links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #6b4226;
+  transition: all 0.3s ease;
+}
+
+.nav-links li a:hover {
+  color: #a55d2d;
+  transform: translateY(-2px);
+}
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .nav-links li a {
+    font-size: 1rem;
+  }
+}
+
+/* =====================
+   Main Menu Section
+===================== */
+.menu-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 150px 20px 50px; /* leave space for fixed navbar */
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  color: #6b4226;
+}
+
+.menu-main h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.menu-main p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+}
+
+/* =======================
+   Cart Popup - Right Side
+======================= */
+.cart-popup {
+  position: fixed;
+  top: 100px; /* adjust based on navbar height */
+  right: 20px; /* distance from the right edge */
+  width: 300px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: #fff8f5;
+  border: 2px solid #6b4226;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  padding: 15px;
+  display: none; /* hidden by default */
+  z-index: 9999;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.cart-popup h3 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #6b4226;
+}
+
+.cart-popup .popup-item {
+  display: flex;
+  align-items: center; /* vertical alignment */
+  gap: 10px; /* spacing between image and text */
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
+}
+
+.cart-popup .popup-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover; /* keep image from stretching */
+  border-radius: 5px;
+}
+
+.cart-popup .popup-item .item-details {
+  display: flex;
+  flex-direction: column; /* name on top, price below */
+}
+
+.cart-popup .qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cart-popup .qty-controls button {
+  width: 25px;
+  height: 25px;
+  font-size: 1rem;
+  background: #6b4226;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cart-popup button.remove {
+  background: #a55d2d;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 2px 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.cart-popup #close-popup {
+  display: block;
+  margin: 10px auto 5px auto;
+  padding: 5px 10px;
+  background: #6b4226;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cart-popup .btn-shop {
+  display: block;
+  text-align: center;
+  margin: 5px auto 0 auto;
+  padding: 5px 10px;
+  background: #a55d2d;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+/* Blurry background for the whole menu page */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: url('images/background.png') no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+}
+
+/* Add a blurry overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(8px); /* adjust blur strength */
+  -webkit-backdrop-filter: blur(8px);
+  z-index: -1; /* make sure it's behind the content */
+}
+/* =======================
+   Menu Page Headings Style
+======================= */
+
+/* Main Menu Title */
+.menu-main h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3rem;
+  text-align: center;
+  color: #6b4226;
+  margin-top: 50px;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+}
+
+.menu-main p {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #422c1f;
+  margin-bottom: 40px;
+}
+
+/* Section Headings (Best Sellers, Food & Cookies, Drinks) */
+.menu-section h2 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.5rem;
+  color: #a55d2d;
+  margin: 50px 0 20px 0;
+  text-align: center;
+  position: relative;
+}
+
+/* Decorative underline for section headings */
+.menu-section h2::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 3px;
+  background-color: #6b4226;
+  margin: 10px auto 0 auto;
+  border-radius: 2px;
+}
+
+/* Optional subtle shadow for headings */
+.menu-section h2 {
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+}
+
+/* =======================
+   Add to Cart Buttons Style
+======================= */
+.add-to-cart-btn {
+  background: linear-gradient(145deg, #f7c08a, #e69a5b);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.add-to-cart-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: rgba(255,255,255,0.3);
+  transform: skewX(-25deg);
+  transition: all 0.5s ease;
+}
+
+.add-to-cart-btn:hover::before {
+  left: 125%;
+}
+
+.add-to-cart-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+.add-to-cart-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Container for the whole cart */
+#cart-container {
+  display: flex;
+  justify-content: space-between; /* left and right side */
+  align-items: flex-start;
+  background: #fff;
+  border-radius: 15px;
+  padding: 20px;
+  max-width: 900px;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+/* Left side - items */
+#cart-left {
+  flex: 2; /* takes more space */
+  display: flex;
+  flex-direction: column; /* items stacked vertically */
+  gap: 10px;
+}
+
+/* Each cart item inside left */
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background: #fff8f5;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Right side - total & checkout */
+#cart-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 15px;
+}
+
+/* Make checkout button fit right panel */
+#cart-right #checkout-btn {
+  width: 100%;
+}
+
+/* ===== Reviews Page ===== */
+.reviews-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.review-box {
+  width: 100%;
+  max-width: 800px;
+  background: rgba(255, 248, 245, 0.9);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review-user {
+  font-weight: 600;
+  color: #6b4226;
+}
+
+.review-date {
+  font-size: 0.9rem;
+  color: #a67c52;
+}
+
+.review-content {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.review-image {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+/* Add Review Button */
+#add-review-btn {
+  padding: 12px 25px;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #f7c08a, #e69a5b);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+  margin: 30px auto;
+  display: block;
+}
+#add-review-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Add Review Form */
+.add-review-form {
+  width: 100%;
+  max-width: 800px;
+  background: rgba(255, 248, 245, 0.95);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.add-review-form input[type="text"],
+.add-review-form textarea,
+.add-review-form input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e0cbbf;
+  font-family: 'Poppins', sans-serif;
+}
+
+.add-review-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.add-review-form button {
+  padding: 12px 25px;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #f7c08a, #e69a5b);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.add-review-form button:hover {
+  transform: translateY(-2px);
+}
+
+/* Add this to your <style> section or your CSS file */
+body {
+  padding-top: 100px; /* push content below fixed navbar */
+}
+
+/* Optional: center the navbar logo and links better */
+.navbar-container {
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Reviews container already centered, no change needed */

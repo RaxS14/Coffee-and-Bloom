@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reviews - COFFEE & BLOOM</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Center reviews and form */
+    #reviews-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .review-box {
+      width: 100%;
+      max-width: 700px;
+      background: rgba(255, 248, 245, 0.9);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .review-box span {
+      display: block;
+      margin-top: 10px;
+      font-weight: 600;
+      color: #6b4226;
+    }
+
+    #review-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      margin: 30px auto;
+      width: 100%;
+      max-width: 700px;
+      background: rgba(255, 248, 245, 0.95);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    #review-form textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #e0cbbf;
+      resize: vertical;
+      min-height: 80px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #review-form input[type="file"] {
+      width: 100%;
+    }
+
+    #review-form button {
+      padding: 12px 25px;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #f7c08a, #e69a5b);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    #review-form button:hover {
+      transform: translateY(-2px);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #6b4226;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <!-- Logo -->
+      <a href="index.html" class="logo-link">
+        <img src="images/logo.png" alt="Coffee & Bloom Logo" class="logo-img">
+      </a>
+
+      <!-- Navigation Links -->
+      <ul class="nav-links">
+        <li><a href="menu.html">☕ Menu</a></li>
+        <li><a href="cart.html">🛍️ Cart</a></li>
+        <li><a href="order.html">🥢 Your Orders</a></li>
+        <li><a href="reviews.html">💬 Reviews</a></li>
+        <li><a href="aboutus.html">🌸 About Us</a></li>
+        <li><a href="customerservice.html">👩🏻‍💻 Customer Service</a></li>
+        <li><a href="logout.html">↪️ Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Title -->
+  <h1>⭐ Customer Reviews</h1>
+
+  <!-- Reviews Container -->
+  <div id="reviews-container">
+    <div class="review-box">
+      <p>😍 "The coffee is amazing, and the blooms are beautiful!"</p>
+      <span>— Jane D.</span>
+    </div>
+    <div class="review-box">
+      <p>👍 "Fast delivery and excellent quality. Highly recommended!"</p>
+      <span>— Mark T.</span>
+    </div>
+    <div class="review-box">
+      <p>❤️ "Love the packaging and the flavors!"</p>
+      <span>— Sarah L.</span>
+    </div>
+    <div class="review-box">
+      <p>🌸 "Such a lovely gift idea! My friend loved it!"</p>
+      <span>— Emily R.</span>
+    </div>
+    <div class="review-box">
+      <p>☕ "The coffee aroma is divine, definitely ordering again!"</p>
+      <span>— Kevin P.</span>
+    </div>
+    <div class="review-box">
+      <p>🎉 "Perfect service and presentation. Totally impressed!"</p>
+      <span>— Mia S.</span>
+    </div>
+  </div>
+
+  <!-- Add Review Section -->
+  <h2>✨ Add Your Review</h2>
+  <form id="review-form" enctype="multipart/form-data">
+    <textarea id="review-text" placeholder="Write your review here..." required></textarea>
+    <label for="review-file">🖼️ Attach proof (optional):</label>
+    <input type="file" id="review-file" accept="image/*">
+    <button type="submit">📝 Submit Review</button>
+  </form>
+
+<script>
+const form = document.getElementById('review-form');
+const reviewsContainer = document.getElementById('reviews-container');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const text = document.getElementById('review-text').value.trim();
+  const fileInput = document.getElementById('review-file');
+  const file = fileInput.files[0];
+
+  if(!text) return;
+
+  const reviewBox = document.createElement('div');
+  reviewBox.classList.add('review-box');
+
+  // Build review HTML
+  let reviewHTML = `<p>💬 "${text}"</p>`;
+  
+  // If user attached an image, preview it
+  if(file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      reviewHTML += `<img src="${event.target.result}" alt="Attachment" style="max-width:100%; margin-top:10px; border-radius:10px;">`;
+      reviewHTML += `<span>— You</span>`;
+      reviewBox.innerHTML = reviewHTML;
+      reviewsContainer.prepend(reviewBox);
+    }
+    reader.readAsDataURL(file);
+  } else {
+    reviewHTML += `<span>— You</span>`;
+    reviewBox.innerHTML = reviewHTML;
+    reviewsContainer.prepend(reviewBox);
+  }
+
+  form.reset();
+});
+</script>
+
+
+</body>
+</html>

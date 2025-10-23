@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu - COFFEE & BLOOM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Stock badges */
+    .stock-badges {
+      margin-top: 4px;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 2px 6px;
+      margin-right: 4px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .status-instock { background-color: #28a745; }
+    .status-pending { background-color: #ffc107; color: #000; }
+    .status-rejected { background-color: #dc3545; }
+
+    /* Popup as sidebar on right */
+    .cart-popup {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 320px;
+      max-height: 80vh;
+      overflow-y: auto;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      z-index: 1000;
+      padding: 15px;
+      flex-direction: column;
+      animation: slideIn 0.3s ease-out;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .cart-popup-content {
+      padding: 0;
+      background: none;
+    }
+    .cart-popup h3 { margin: 0 0 10px 0; }
+    .popup-item { display: flex; margin-bottom: 10px; }
+    .popup-item img { width: 60px; height: 60px; object-fit: cover; margin-right: 10px; }
+    .qty-controls button { margin: 0 5px; }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <a href="index.html" class="logo-link">
+      <img src="images/logo.png" alt="Coffee & Bloom Logo" class="logo-img">
+    </a>
+    <ul class="nav-links">
+      <li><a href="menu.html">☕ Menu</a></li>
+      <li><a href="cart.html">🛍️ Cart</a></li>
+      <li><a href="order.html">🥢 Your Orders</a></li>
+      <li><a href="reviews.html">💬 Reviews</a></li>
+      <li><a href="aboutus.html">🌸 About Us</a></li>
+      <li><a href="customerservice.html">👩🏻‍💻 Customer Service</a></li>
+      <li><a href="logout.html">↪️ Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Main Menu Section -->
+<main class="menu-main">
+  <h1>Our Menu</h1>
+  <p>Here are all our delightful drinks and blooms!</p>
+</main>
+
+<!-- Menu Section -->
+<section class="menu-section">
+
+  <!-- Best Sellers -->
+  <h2>Best Sellers</h2>
+  <div class="products">
+    <div class="product-card best-seller">
+      <a href="product.html?name=Nutella Cookie" class="product-link">
+        <img src="images/nutella-cookie.png" alt="Nutella Cookie" class="product-img">
+      </a>
+      <h3>NUTELLA COOKIE</h3>
+      <p>₱85.00</p>
+      <button class="add-to-cart-btn" data-name="Nutella Cookie" data-price="85" data-img="images/nutella-cookie.png">Add to Cart</button>
+    </div>
+    <div class="product-card best-seller">
+      <a href="product.html?name=Creamy Bolognese" class="product-link">
+        <img src="images/creamy-bolognese.png" alt="Creamy Bolognese" class="product-img">
+      </a>
+      <h3>CREAMY BOLOGNESE</h3>
+      <p>₱210.00</p>
+      <button class="add-to-cart-btn" data-name="Creamy Bolognese" data-price="210" data-img="images/creamy-bolognese.png">Add to Cart</button>
+    </div>
+    <div class="product-card best-seller">
+      <a href="product.html?name=Spanish Latte" class="product-link">
+        <img src="images/spanish-latte.png" alt="Spanish Latte" class="product-img">
+      </a>
+      <h3>SPANISH LATTE</h3>
+      <p>₱165.00</p>
+      <button class="add-to-cart-btn" data-name="Spanish Latte" data-price="165" data-img="images/spanish-latte.png">Add to Cart</button>
+    </div>
+  </div>
+
+  <!-- Food & Cookies -->
+  <h2>Food & Cookies</h2>
+  <div class="products">
+    <div class="product-card">
+      <a href="product.html?name=Flower + Any Coffee">
+        <img src="images/flower-coffee.png" alt="Flower + Any Coffee" class="product-img">
+      </a>
+      <h3>FLOWER + ANY KIND OF COFFEE</h3>
+      <p>₱300.00</p>
+      <button class="add-to-cart-btn" data-name="Flower + Any Coffee" data-price="300" data-img="images/flower-coffee.png">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <a href="product.html?name=Bouquet of Flower">
+        <img src="images/bouquet.png" alt="Bouquet of Flower" class="product-img">
+      </a>
+      <h3>BOUQUET OF FLOWER</h3>
+      <p>₱400.00</p>
+      <button class="add-to-cart-btn" data-name="Bouquet of Flower" data-price="400" data-img="images/bouquet.png">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <a href="product.html?name=Matcha Cookie">
+        <img src="images/matcha-cookie.png" alt="Matcha Cookie" class="product-img">
+      </a>
+      <h3>MATCHA COOKIE</h3>
+      <p>₱85.00</p>
+      <button class="add-to-cart-btn" data-name="Matcha Cookie" data-price="85" data-img="images/matcha-cookie.png">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <a href="product.html?name=Classic S’mores">
+        <img src="images/classic-smores.png" alt="Classic S’mores" class="product-img">
+      </a>
+      <h3>CLASSIC SMORE'S</h3>
+      <p>₱80.00</p>
+      <button class="add-to-cart-btn" data-name="Classic S’mores" data-price="80" data-img="images/classic-smores.png">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <a href="product.html?name=OG Chocolate Chip Cookie">
+        <img src="images/og-choc-chip.png" alt="OG Chocolate Chip Cookie" class="product-img">
+      </a>
+      <h3>OG CHOCOLATE CHIP COOKIE</h3>
+      <p>₱80.00</p>
+      <button class="add-to-cart-btn" data-name="OG Chocolate Chip Cookie" data-price="80" data-img="images/og-choc-chip.png">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <a href="product.html?name=Aglio e Olio">
+        <img src="images/aglio-olio.png" alt="Aglio e Olio" class="product-img">
+      </a>
+      <h3>AGLIO E OLIO</h3>
+      <p>₱210.00</p>
+      <button class="add-to-cart-btn" data-name="Aglio e Olio" data-price="210" data-img="images/aglio-olio.png">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <a href="product.html?name=Creamy Carbonara">
+        <img src="images/creamy-carbonara.png" alt="Creamy Carbonara" class="product-img">
+      </a>
+      <h3>CREAMY CARBONARA</h3>
+      <p>₱210.00</p>
+      <button class="add-to-cart-btn" data-name="Creamy Carbonara" data-price="210" data-img="images/creamy-carbonara.png">Add to Cart</button>
+    </div>
+  </div>
+
+  <!-- Drinks -->
+  <h2>Drinks</h2>
+  <div class="products">
+    <div class="product-card">
+      <a href="product.html?name=Cappuccino">
+        <img src="images/cappuccino.png" alt="Cappuccino" class="product-img">
+      </a>
+      <h3>CAPPUCCINO</h3>
+      <p>₱155.00</p>
+      <button class="add-to-cart-btn" data-name="Cappuccino" data-price="155" data-img="images/cappuccino.png">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <a href="product.html?name=Cafe Americano">
+        <img src="images/cafe-americano.png" alt="Cafe Americano" class="product-img">
+      </a>
+      <h3>CAFE AMERICANO</h3>
+      <p>₱140.00</p>
+      <button class="add-to-cart-btn" data-name="Cafe Americano" data-price="140" data-img="images/cafe-americano.png">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <a href="product.html?name=Pure Matcha">
+        <img src="images/pure-matcha.png" alt="Pure Matcha" class="product-img">
+      </a>
+      <h3>PURE MATCHA</h3>
+      <p>₱165.00</p>
+      <button class="add-to-cart-btn" data-name="Pure Matcha" data-price="165" data-img="images/pure-matcha.png">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <a href="product.html?name=Matcha Latte">
+        <img src="images/matcha-latte.png" alt="Matcha Latte" class="product-img">
+      </a>
+      <h3>MATCHA LATTE</h3>
+      <p>₱170.00</p>
+      <button class="add-to-cart-btn" data-name="Matcha Latte" data-price="170" data-img="images/matcha-latte.png">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <a href="product.html?name=Caramel Macchiato">
+        <img src="images/caramel-macchiato.png" alt="Caramel Macchiato" class="product-img">
+      </a>
+      <h3>CARAMEL MACCHIATO</h3>
+      <p>₱160.00</p>
+      <button class="add-to-cart-btn" data-name="Caramel Macchiato" data-price="160" data-img="images/caramel-macchiato.png">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <a href="product.html?name=Sea Salt Latte">
+        <img src="images/sea-salt-latte.png" alt="Sea Salt Latte" class="product-img">
+      </a>
+      <h3>SEA SALT LATTE</h3>
+      <p>₱160.00</p>
+      <button class="add-to-cart-btn" data-name="Sea Salt Latte" data-price="160" data-img="images/sea-salt-latte.png">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <a href="product.html?name=Cloud Americano">
+        <img src="images/cloud-americano.png" alt="Cloud Americano" class="product-img">
+      </a>
+      <h3>CLOUD AMERICANO</h3>
+      <p>₱160.00</p>
+      <button class="add-to-cart-btn" data-name="Cloud Americano" data-price="160" data-img="images/cloud-americano.png">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <a href="product.html?name=Iced Cafe Americano">
+        <img src="images/iced-cafe-americano.png" alt="Iced Cafe Americano" class="product-img">
+      </a>
+      <h3>ICED CAFE AMERICANO</h3>
+      <p>₱155.00</p>
+      <button class="add-to-cart-btn" data-name="Iced Cafe Americano" data-price="155" data-img="images/iced-cafe-americano.png">Add to Cart</button>
+    </div>
+  </div>
+
+</section>
+
+<!-- Popup Modal -->
+<div id="cart-popup" class="cart-popup">
+  <div class="cart-popup-content">
+    <h3>Added to Cart!</h3>
+    <div id="popup-products"></div>
+    <button id="checkout">Checkout</button>
+    <button id="close-popup">Close</button>
+    <a href="cart.html" class="btn-shop">Go to Cart</a>
+  </div>
+</div>
+
+<script>
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let stockData = JSON.parse(localStorage.getItem("productStock")) || {};
+
+  const allProducts = [
+    "Nutella Cookie","Creamy Bolognese","Spanish Latte",
+    "Flower + Any Coffee","Bouquet of Flower","Matcha Cookie","Classic S’mores","OG Chocolate Chip Cookie",
+    "Aglio e Olio","Creamy Carbonara","Cappuccino","Cafe Americano","Pure Matcha","Matcha Latte",
+    "Caramel Macchiato","Sea Salt Latte","Cloud Americano","Iced Cafe Americano"
+  ];
+
+  allProducts.forEach(name => {
+    if(!stockData[name]) stockData[name] = { inStock:50, pending:0, rejected:0 };
+  });
+
+  const reactiveStock = {};
+  allProducts.forEach(name => {
+    reactiveStock[name] = new Proxy(stockData[name], {
+      set(target, prop, value){
+        target[prop] = value;
+        updateStockBadges();
+        saveStock();
+        return true;
+      }
+    });
+  });
+  stockData = reactiveStock;
+
+  const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+  const cartPopup = document.getElementById('cart-popup');
+  const popupProducts = document.getElementById('popup-products');
+  const closePopup = document.getElementById('close-popup');
+  const checkoutBtn = document.getElementById('checkout');
+
+  function saveStock(){
+    const plainStock = {};
+    allProducts.forEach(name => plainStock[name] = {...stockData[name]});
+    localStorage.setItem('productStock', JSON.stringify(plainStock));
+  }
+
+  function saveCart(){
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  addToCartButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name = btn.dataset.name;
+      if(stockData[name].inStock <= 0){ alert("Out of stock!"); return; }
+
+      const product = { name, price:parseFloat(btn.dataset.price), img:btn.dataset.img, qty:1 };
+      const existing = cart.find(i=>i.name===name);
+      if(existing){ existing.qty++; stockData[name].inStock--; }
+      else { cart.push(product); stockData[name].inStock--; }
+
+      saveCart();
+      renderPopup();
+      updateStockBadges();
+    });
+  });
+
+  function renderPopup(){
+    popupProducts.innerHTML = '';
+    cart.forEach((item,i)=>{
+      const div = document.createElement('div');
+      div.className = "popup-item";
+      div.innerHTML = `
+        <img src="${item.img}" alt="${item.name}">
+        <div class="popup-info">
+          <p>${item.name}</p>
+          <p>₱${item.price.toFixed(2)}</p>
+          <div class="qty-controls">
+            <button class="minus" data-index="${i}">-</button>
+            <span>${item.qty}</span>
+            <button class="plus" data-index="${i}">+</button>
+          </div>
+          <button class="remove" data-index="${i}">Remove</button>
+        </div>
+      `;
+      popupProducts.appendChild(div);
+    });
+    attachPopupEvents();
+    cartPopup.style.display = 'flex';
+  }
+
+  function attachPopupEvents(){
+    popupProducts.querySelectorAll('.plus').forEach(btn=>{
+      btn.onclick = () => {
+        const i = btn.dataset.index;
+        const name = cart[i].name;
+        if(stockData[name].inStock>0){ cart[i].qty++; stockData[name].inStock--; saveCart(); }
+        else alert("No more stock!");
+        renderPopup();
+      }
+    });
+    popupProducts.querySelectorAll('.minus').forEach(btn=>{
+      btn.onclick = () => {
+        const i = btn.dataset.index;
+        const name = cart[i].name;
+        if(cart[i].qty>1){ cart[i].qty--; stockData[name].inStock++; saveCart(); }
+        renderPopup();
+      }
+    });
+    popupProducts.querySelectorAll('.remove').forEach(btn=>{
+      btn.onclick = () => {
+        const i = btn.dataset.index;
+        const name = cart[i].name;
+        stockData[name].inStock += cart[i].qty;
+        cart.splice(i,1);
+        saveCart();
+        renderPopup();
+      }
+    });
+  }
+
+  function updateStockBadges(){
+    document.querySelectorAll(".product-card").forEach(card=>{
+      const btn = card.querySelector(".add-to-cart-btn");
+      const name = btn.dataset.name;
+      const stock = stockData[name];
+
+      let badgeContainer = card.querySelector(".stock-badges");
+      if(!badgeContainer){
+        badgeContainer = document.createElement("div");
+        badgeContainer.className="stock-badges";
+        card.appendChild(badgeContainer);
+      }
+      badgeContainer.innerHTML=`
+        <span class="status-badge status-instock">In Stock: ${stock.inStock}</span>
+        <span class="status-badge status-pending">Pending: ${stock.pending}</span>
+        <span class="status-badge status-rejected">Rejected: ${stock.rejected}</span>
+      `;
+      badgeContainer.classList.add('flash');
+      setTimeout(()=> badgeContainer.classList.remove('flash'), 500);
+
+      btn.disabled = stock.inStock <= 0;
+      btn.style.opacity = stock.inStock <= 0 ? 0.5 : 1;
+    });
+  }
+
+  closePopup.onclick = ()=> cartPopup.style.display='none';
+  window.addEventListener('click', e=>{ if(e.target===cartPopup) cartPopup.style.display='none'; });
+
+  checkoutBtn.onclick = () => {
+    cart.forEach(item => stockData[item.name].pending += item.qty);
+    cart = [];
+    renderPopup();
+    alert("Checkout complete! Items moved to Pending.");
+  }
+
+  updateStockBadges();
+</script>
+</body>
+</html>

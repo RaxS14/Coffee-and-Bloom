@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Service - Coffee & Bloom</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #fff8f5 url('images/background.png') no-repeat center center;
+    background-size: cover;
+    margin: 0; padding: 0; color: #6b4226;
+  }
+
+  /* Navbar */
+  .navbar {
+    width: 100%;
+    background: rgba(255, 248, 245, 0.9);
+    position: fixed; top: 0; left: 0; z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  .navbar-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; }
+  .nav-links { list-style: none; display: flex; gap: 20px; }
+  .nav-links a { text-decoration: none; color: #6b4226; font-weight: 600; }
+  .logo-img { height: 50px; }
+
+  /* Form container */
+  .form-container {
+    max-width: 800px; margin: 120px auto 20px;
+    padding: 25px; background: rgba(255,248,245,0.9); border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  .form-container h2 { text-align: center; margin-bottom: 20px; }
+  .form-group { margin-bottom: 15px; }
+  .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
+  .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #ccc; font-family: 'Poppins', sans-serif; }
+  .form-group textarea { resize: vertical; height: 100px; }
+  .submit-btn { background: #6b4226; color: #fff; padding: 10px 20px; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+  .submit-btn:hover { background: #8c5c3a; }
+
+  /* Tickets list */
+  .tickets-container { max-width: 800px; margin: 20px auto 50px; display: flex; flex-direction: column; gap: 15px; }
+  .ticket-box { padding: 15px; border-radius: 12px; box-shadow: 0 3px 8px rgba(0,0,0,0.1); position: relative; }
+  .ticket-box h4 { margin: 0 0 5px; }
+  .ticket-box p { margin: 3px 0; }
+  .attachment-img { max-width: 150px; margin-top: 5px; cursor: pointer; border: 2px solid #e0cbbf; border-radius: 8px; }
+  .status-select { margin-top: 10px; padding: 5px 10px; border-radius: 8px; border: 1px solid #ccc; }
+  .remove-btn { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: #d9534f; color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+
+  /* Status colors */
+  .status-Pending { background-color: #ffe4b5; }
+  .status-In\ Progress { background-color: #cce5ff; }
+  .status-Resolved { background-color: #d4edda; }
+
+  /* Notification */
+  .notification {
+    position: fixed; top: 20px; right: 20px;
+    background: #333; color: #fff; padding: 12px 20px; border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2); opacity: 0; transition: opacity 0.5s;
+    z-index: 2000;
+  }
+  .notification.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-container">
+    <a href="index.html"><img src="images/logo.png" alt="Logo" class="logo-img"></a>
+    <ul class="nav-links">
+      <li><a href="menu.html">☕ Menu</a></li>
+      <li><a href="cart.html">🛍️ Cart</a></li>
+      <li><a href="order.html">🥢 Your Orders</a></li>
+      <li><a href="reviews.html">💬 Reviews</a></li>
+      <li><a href="aboutus.html">🌸 About Us</a></li>
+      <li><a href="customerservice.html">👩🏻‍💻 Customer Service</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="form-container">
+  <h2>📬 Submit Customer Service Ticket</h2>
+  <form id="cs-form">
+    <div class="form-group"><label for="name">Name:</label><input type="text" id="name" required></div>
+    <div class="form-group"><label for="contact">Contact Number:</label><input type="text" id="contact" required></div>
+    <div class="form-group"><label for="email">Email:</label><input type="email" id="email" required></div>
+    <div class="form-group"><label for="reason">Reason:</label>
+      <select id="reason" required>
+        <option value="">Select Reason</option>
+        <option value="Order Issue">Order Issue</option>
+        <option value="Payment Issue">Payment Issue</option>
+        <option value="Feedback">Feedback</option>
+        <option value="Others">Others</option>
+      </select>
+    </div>
+    <div class="form-group"><label for="message">Message:</label><textarea id="message" required></textarea></div>
+    <div class="form-group"><label for="attachment">Attachment (optional):</label><input type="file" id="attachment" accept="image/*,.pdf"></div>
+    <button type="submit" class="submit-btn">Submit Ticket</button>
+  </form>
+</div>
+
+<div class="tickets-container" id="tickets-container"></div>
+
+<div class="notification" id="notification"></div>
+
+<script>
+const form = document.getElementById('cs-form');
+const ticketsContainer = document.getElementById('tickets-container');
+const notification = document.getElementById('notification');
+
+function showNotification(message){
+  notification.textContent = message;
+  notification.classList.add('show');
+  setTimeout(()=>notification.classList.remove('show'), 3000);
+}
+
+function renderTickets() {
+  const tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+  ticketsContainer.innerHTML = '';
+  tickets.forEach((ticket, index) => {
+    const attachmentHTML = ticket.attachment 
+      ? `<a href="${ticket.attachment}" target="_blank"><img src="${ticket.attachment}" class="attachment-img"></a>` 
+      : '';
+    const box = document.createElement('div');
+    box.className = `ticket-box status-${ticket.status}`;
+    box.innerHTML = `
+      <h4>${ticket.name} - ${ticket.contact}</h4>
+      <p>Email: ${ticket.email}</p>
+      <p>Reason: ${ticket.reason}</p>
+      <p>Message: ${ticket.message}</p>
+      ${attachmentHTML}
+      <p>Status: 
+        <select class="status-select" onchange="updateTicketStatus(${index}, this.value)">
+          <option value="Pending" ${ticket.status==='Pending'?'selected':''}>Pending</option>
+          <option value="In Progress" ${ticket.status==='In Progress'?'selected':''}>In Progress</option>
+          <option value="Resolved" ${ticket.status==='Resolved'?'selected':''}>Resolved</option>
+        </select>
+      </p>
+      <small>Submitted: ${new Date(ticket.timestamp).toLocaleString()}</small>
+      <button class="remove-btn" onclick="removeTicket(${index})">Remove</button>
+    `;
+    ticketsContainer.appendChild(box);
+  });
+}
+
+function updateTicketStatus(index, status){
+  const tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+  tickets[index].status = status;
+  localStorage.setItem('tickets', JSON.stringify(tickets));
+  renderTickets();
+  if(status==='In Progress') showNotification(`Ticket #${index+1} is now In Progress`);
+  if(status==='Resolved') showNotification(`Ticket #${index+1} has been Resolved`);
+}
+
+// Remove ticket
+function removeTicket(index){
+  const tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+  if(confirm('Remove this ticket?')){
+    tickets.splice(index, 1);
+    localStorage.setItem('tickets', JSON.stringify(tickets));
+    renderTickets();
+  }
+}
+
+// Handle form submit
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const contact = document.getElementById('contact').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const reason = document.getElementById('reason').value;
+  const message = document.getElementById('message').value.trim();
+  const attachmentInput = document.getElementById('attachment');
+  const attachmentFile = attachmentInput.files[0];
+
+  function saveTicket(attachmentData){
+    const tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+    tickets.push({name, contact, email, reason, message, attachment: attachmentData || null, status: 'Pending', timestamp: new Date().toISOString()});
+    localStorage.setItem('tickets', JSON.stringify(tickets));
+    renderTickets();
+    alert('Ticket submitted successfully!');
+    form.reset();
+  }
+
+  if(attachmentFile){
+    const reader = new FileReader();
+    reader.onload = function(){ saveTicket(reader.result); }
+    reader.readAsDataURL(attachmentFile);
+  } else { saveTicket(null); }
+});
+
+// Live updates between tabs
+window.addEventListener('storage', e => {
+  if(e.key==='tickets') renderTickets();
+});
+
+// Initial render
+renderTickets();
+</script>
+
+</body>
+</html>

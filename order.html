@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orders - COFFEE & BLOOM</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #fff8f5 url('images/background.png') no-repeat center center;
+    background-size: cover;
+    padding: 50px 20px;
+    text-align: center;
+  }
+
+  .navbar {
+    width: 100%;
+    background: rgba(255, 248, 245, 0.9);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  .navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+  }
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: #6b4226;
+    font-weight: 600;
+  }
+  .logo-img { height: 50px; }
+
+  h1 { color: #6b4226; margin-top: 100px; }
+
+  #orders-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .order-box {
+    width: 100%;
+    max-width: 800px;
+    background: rgba(255,248,245,0.9);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: left;
+    position: relative;
+  }
+
+  .order-box h3 { margin-bottom: 10px; color: #6b4226; }
+  .order-items p { margin: 5px 0; }
+  .receipt-img { margin-top: 10px; max-width: 200px; border: 2px solid #e0cbbf; border-radius: 8px; }
+  .status { margin-top: 10px; font-weight: 600; color: #6b4226; }
+  .track-btn, .cancel-btn {
+    margin-top: 10px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .track-btn { background: #6b4226; color: #fff; }
+  .track-btn:hover { background: #4e2f18; }
+  .cancel-btn { background: #dc3545; color: #fff; margin-left: 10px; }
+  .cancel-btn:hover { background: #b71c1c; }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <a href="index.html" class="logo-link">
+      <img src="images/logo.png" alt="Coffee & Bloom Logo" class="logo-img">
+    </a>
+    <ul class="nav-links">
+      <li><a href="menu.html">☕ Menu</a></li>
+      <li><a href="cart.html">🛍️ Cart</a></li>
+      <li><a href="order.html">🥢 Your Orders</a></li>
+      <li><a href="reviews.html">💬 Reviews</a></li>
+      <li><a href="aboutus.html">🌸 About Us</a></li>
+      <li><a href="customerservice.html">👩🏻‍💻 Customer Service</a></li>
+      <li><a href="logout.html">↪️ Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+<h1>📦 Your Orders</h1>
+<div id="orders-container"></div>
+
+<script>
+const ordersContainer = document.getElementById('orders-container');
+
+function getOrders() {
+  return JSON.parse(localStorage.getItem('orders')) || [];
+}
+
+function renderOrders() {
+  const orders = getOrders();
+  ordersContainer.innerHTML = '';
+
+  if (orders.length === 0) {
+    ordersContainer.innerHTML = '<p>No orders yet.</p>';
+    return;
+  }
+
+  orders.forEach((order, index) => {
+    const orderBox = document.createElement('div');
+    orderBox.classList.add('order-box');
+
+    let itemsHTML = '';
+    order.items.forEach(item => {
+      itemsHTML += `<p>${item.name} x ${item.qty} - ₱${(item.price * item.qty).toFixed(2)}</p>`;
+    });
+
+    let receiptHTML = '';
+    if(order.payment === 'GCash' && order.receipt) {
+      receiptHTML = `<p>GCash Receipt:</p><img src="${order.receipt}" alt="Receipt" class="receipt-img">`;
+    }
+
+    const status = order.status || 'Waiting for Confirmation';
+    const isCancelable = status !== 'Cancelled' && status !== 'Delivered';
+
+    orderBox.innerHTML = `
+      <h3>${order.name} - ${order.contact}</h3>
+      <p>Payment Method: ${order.payment}</p>
+      <div class="order-items">${itemsHTML}</div>
+      <p>Total: ₱${order.total}</p>
+      ${receiptHTML}
+      <p class="status" id="status-${index}">Status: ${status}</p>
+      <button class="track-btn" onclick="trackOrder(${index})">Track Order 🏍️</button>
+      ${isCancelable ? `<button class="cancel-btn" onclick="cancelOrder(${index})">❌ Cancel Order</button>` : ''}
+    `;
+
+    ordersContainer.appendChild(orderBox);
+  });
+}
+
+function trackOrder(index) {
+  const orders = getOrders();
+  const order = orders[index];
+  localStorage.setItem('deliveryLocation', JSON.stringify(order.location));
+  localStorage.setItem('activeDelivery', order.status === 'Delivered' ? 'delivered' : 'on_the_way');
+  window.location.href = 'tracking.html';
+}
+
+function cancelOrder(index) {
+  const orders = getOrders();
+  const order = orders[index];
+  if(confirm(`Are you sure you want to cancel ${order.name}'s order?`)) {
+    order.status = "Cancelled";
+    localStorage.setItem('orders', JSON.stringify(orders));
+    renderOrders(); // re-render orders
+    alert("Order has been cancelled.");
+  }
+}
+
+// Initial render
+renderOrders();
+
+// Live updates when admin changes orders
+window.addEventListener('storage', (e) => {
+  if(e.key === 'orders') renderOrders();
+});
+</script>
+
+</body>
+</html>

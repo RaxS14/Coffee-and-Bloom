@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us - Coffee & Bloom</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  body {
+font-family: 'Poppins', sans-serif;
+    background: #fff8f5 url('images/bloom.png') no-repeat center center;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    color: #6b4226;
+  }
+
+  /* Navbar adjustments */
+  .navbar {
+    width: 100%;
+    background: rgba(255, 248, 245, 0.9);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  .navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+  }
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: #6b4226;
+    font-weight: 600;
+  }
+  .logo-img {
+    height: 50px;
+  }
+
+  /* About Us Content */
+  .about-container {
+    max-width: 1000px;
+    margin: 120px auto 50px;
+    padding: 20px;
+    background: rgba(255, 248, 245, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    line-height: 1.7;
+  }
+
+  .about-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .section {
+    margin-bottom: 30px;
+  }
+
+  .section h3 {
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+
+  .social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .social-buttons a {
+    text-decoration: none;
+    color: #fff;
+    background: #6b4226;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+
+  .social-buttons a:hover {
+    background: #8c5c3a;
+  }
+
+  @media (max-width: 600px) {
+    .nav-links {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .about-container {
+      margin: 150px 10px 50px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <a href="index.html"><img src="images/logo.png" alt="Logo" class="logo-img"></a>
+    <ul class="nav-links">
+      <li><a href="menu.html">☕ Menu</a></li>
+      <li><a href="cart.html">🛍️ Cart</a></li>
+      <li><a href="order.html">🥢 Your Orders</a></li>
+      <li><a href="reviews.html">💬 Reviews</a></li>
+      <li><a href="aboutus.html">🌸 About Us</a></li>
+      <li><a href="customerservice.html">👩🏻‍💻 Customer Service</a></li>
+      <li><a href="logout.html">↪️ Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- About Us Content -->
+<div class="about-container">
+  <h2>🌸 Welcome to Coffee & Bloom</h2>
+
+  <div class="section">
+    <p>Welcome to Coffee and Bloom, where every cup tells a story and every bloom brings a smile. We're more than just an online store; we're a community of coffee and flower enthusiasts passionate about bringing people together through the simple joys of life.</p>
+  </div>
+
+  <div class="section">
+    <h3>Our Story</h3>
+    <p>Coffee and Bloom was born from a love of great coffee and beautiful flowers. We believe that both have the power to brighten up anyone's day and bring people closer together. Our mission is to source the finest, sustainably grown coffee beans and the freshest, most vibrant flowers, and share them with you.</p>
+  </div>
+
+  <div class="section">
+    <h3>Opening Hours</h3>
+    <p>Mon - Fri: 10:00AM - 10:00PM</p>
+    <p>Saturday: 8:00AM - 12:00AM</p>
+    <p>Sunday: 8:00AM - 11:00PM</p>
+  </div>
+
+  <div class="section social-buttons">
+    <a href="https://www.instagram.com/coffeexbloom/" target="_blank">Instagram</a>
+    <a href="https://www.facebook.com/profile.php?id=61576374484715" target="_blank">Facebook</a>
+    <a href="https://www.tiktok.com/@ayaxheart" target="_blank">TikTok</a>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart - COFFEE & BLOOM</title>
+<link rel="stylesheet" href="style.css">
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #fff8f5 url('images/background.png') no-repeat center center;
+    background-size: cover;
+    text-align: center;
+    padding: 50px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar {
+    width: 100%;
+    background: rgba(255, 248, 245, 0.9);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  .navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+  }
+
+  .nav-links { list-style: none; display: flex; gap: 20px; }
+  .nav-links a { text-decoration: none; color: #6b4226; font-weight: 600; }
+  .logo-img { height: 50px; }
+
+  h1, h2, h3 { color: #6b4226; margin-bottom: 20px; }
+
+  #cart-items {
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 30px;
+    background: rgba(255, 248, 245, 0.85);
+    padding: 20px;
+    border-radius: 15px;
+  }
+
+  label, input, select, button { display: block; margin: 0 auto 15px auto; }
+  input, select { padding: 10px; width: 250px; border-radius: 8px; border: 1px solid #e0cbbf; text-align: center; }
+
+  #checkout-btn, #show-map-btn {
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    color: #fff;
+    background: linear-gradient(145deg, #f7c08a, #e69a5b);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  #checkout-btn:hover, #show-map-btn:hover { transform: translateY(-2px); }
+
+  .payment-info {
+    display: none;
+    margin: 10px auto 30px auto;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #6b4226;
+    max-width: 400px;
+    background: rgba(255, 248, 245, 0.9);
+  }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e0cbbf;
+    padding-bottom: 10px;
+  }
+
+  .cart-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
+
+  .cart-info { flex: 1; text-align: left; }
+  .qty-controls { display: flex; align-items: center; gap: 10px; margin-top: 5px; }
+  .qty-controls button { padding: 3px 8px; border-radius: 5px; border: none; background: #e69a5b; color: #fff; cursor: pointer; }
+
+  /* Map popup styles */
+  #map-container {
+    display: none;
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+  }
+  #map-box {
+    position: relative;
+    background: #fff8f5;
+    padding: 15px;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+  }
+  #map { height: 400px; width: 100%; border-radius: 12px; }
+  #close-map-btn {
+    position: absolute; top:5px; right:5px; z-index:3000;
+    padding:5px 10px; border:none; border-radius:5px;
+    background:#e69a5b; color:#fff; cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <a href="index.html"><img src="images/logo.png" alt="Logo" class="logo-img"></a>
+    <ul class="nav-links">
+      <li><a href="menu.html">☕ Menu</a></li>
+      <li><a href="cart.html">🛍️ Cart</a></li>
+      <li><a href="order.html">🥢 Your Orders</a></li>
+      <li><a href="reviews.html">💬 Reviews</a></li>
+      <li><a href="aboutus.html">🌸 About Us</a></li>
+      <li><a href="customerservice.html">👩🏻‍💻 Customer Service</a></li>
+      <li><a href="logout.html">↪️ Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+<h1>Your Cart</h1>
+<div id="cart-items"></div>
+<h3 id="total-price">Total: ₱0.00</h3>
+
+<h2>Buyer Details</h2>
+<label for="buyer-name">Name:</label>
+<input type="text" id="buyer-name" placeholder="Your Name">
+<label for="buyer-contact">Contact:</label>
+<input type="text" id="buyer-contact" placeholder="Contact Number">
+
+<h2>Payment Method</h2>
+<select id="payment-method">
+  <option value="">Select</option>
+  <option value="COD">Cash on Delivery (COD)</option>
+  <option value="GCash">GCash</option>
+</select>
+
+<div id="payment-popup" class="payment-info">
+  <div id="cod-info"><p>Pay when your order arrives.</p></div>
+  <div id="gcash-info">
+    <img src="images/qr-placeholder.png" alt="GCash QR" width="150">
+    <p>Name: Arabella Jasma</p>
+    <p>Number: 09455891294</p>
+    <label for="gcash-file">Upload your GCash receipt:</label>
+    <input type="file" id="gcash-file" accept="image/*">
+  </div>
+</div>
+
+<h2>Delivery Location</h2>
+<button id="show-map-btn">📍 Pin Your Location</button>
+
+<!-- Map Popup -->
+<div id="map-container">
+  <div id="map-box">
+    <button id="close-map-btn">✖ Close</button>
+    <div id="map"></div>
+    <p id="location-status">Drag the pin to set your delivery location.</p>
+  </div>
+</div>
+
+<button id="checkout-btn">Checkout</button>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  // Cart Elements
+  const cartItemsDiv = document.getElementById('cart-items');
+  const totalPriceEl = document.getElementById('total-price');
+  const buyerName = document.getElementById('buyer-name');
+  const buyerContact = document.getElementById('buyer-contact');
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const paymentMethod = document.getElementById('payment-method');
+  const paymentPopup = document.getElementById('payment-popup');
+  const codInfo = document.getElementById('cod-info');
+  const gcashInfo = document.getElementById('gcash-info');
+  const gcashFile = document.getElementById('gcash-file');
+  const locationStatus = document.getElementById('location-status');
+
+  const showMapBtn = document.getElementById('show-map-btn');
+  const mapContainer = document.getElementById('map-container');
+  const closeMapBtn = document.getElementById('close-map-btn');
+
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let userLocation = JSON.parse(localStorage.getItem('userLocation')) || null;
+
+  function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); }
+
+  function renderCart() {
+    cartItemsDiv.innerHTML = '';
+    if(cart.length === 0) {
+      cartItemsDiv.innerHTML = '<p>Your cart is empty.</p>';
+      totalPriceEl.textContent = '';
+      return;
+    }
+    let total = 0;
+    cart.forEach((item,index)=>{
+      const itemTotal = item.price*item.qty;
+      total+=itemTotal;
+      const div = document.createElement('div');
+      div.className='cart-item';
+      div.innerHTML = `
+        <img src="${item.img}" alt="${item.name}">
+        <div class="cart-info">
+          <p>${item.name}</p>
+          <p>₱${item.price.toFixed(2)} x ${item.qty} = ₱${itemTotal.toFixed(2)}</p>
+          <div class="qty-controls">
+            <button class="minus" data-index="${index}">-</button>
+            <span>${item.qty}</span>
+            <button class="plus" data-index="${index}">+</button>
+            <button class="remove" data-index="${index}">Remove</button>
+          </div>
+        </div>
+      `;
+      cartItemsDiv.appendChild(div);
+    });
+    totalPriceEl.textContent=`Total: ₱${total.toFixed(2)}`;
+    attachCartEvents();
+  }
+
+  function attachCartEvents() {
+    document.querySelectorAll('.plus').forEach(btn=>btn.onclick=()=>{
+      const i = btn.dataset.index; cart[i].qty++; saveCart(); renderCart();
+    });
+    document.querySelectorAll('.minus').forEach(btn=>btn.onclick=()=>{
+      const i = btn.dataset.index; if(cart[i].qty>1) cart[i].qty--; saveCart(); renderCart();
+    });
+    document.querySelectorAll('.remove').forEach(btn=>btn.onclick=()=>{
+      const i = btn.dataset.index; cart.splice(i,1); saveCart(); renderCart();
+    });
+  }
+
+  // Payment popup
+  paymentMethod.addEventListener('change', ()=>{
+    const method=paymentMethod.value;
+    paymentPopup.style.display = method ? 'block' : 'none';
+    codInfo.style.display = method==='COD'?'block':'none';
+    gcashInfo.style.display = method==='GCash'?'block':'none';
+  });
+
+  // Map Initialization
+  let map, marker;
+  showMapBtn.onclick = ()=>{
+    mapContainer.style.display='flex';
+    showMapBtn.style.display='none';
+    if(!map){
+      map=L.map('map').setView([10.2635,123.8722],15);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
+      marker=L.marker([10.2635,123.8722],{draggable:true}).addTo(map);
+
+      marker.on('dragend',()=>{
+        const pos=marker.getLatLng();
+        userLocation={lat:pos.lat,lng:pos.lng};
+        locationStatus.textContent=`Location pinned! (${pos.lat.toFixed(5)},${pos.lng.toFixed(5)})`;
+        locationStatus.style.color='green';
+        localStorage.setItem('userLocation',JSON.stringify(userLocation));
+      });
+
+      map.on('click',e=>{
+        marker.setLatLng(e.latlng);
+        userLocation={lat:e.latlng.lat,lng:e.latlng.lng};
+        locationStatus.textContent=`Location pinned! (${e.latlng.lat.toFixed(5)},${e.latlng.lng.toFixed(5)})`;
+        locationStatus.style.color='green';
+        localStorage.setItem('userLocation',JSON.stringify(userLocation));
+      });
+    }
+    setTimeout(()=>map.invalidateSize(),100);
+  };
+
+  closeMapBtn.onclick = ()=>{
+    mapContainer.style.display='none';
+    showMapBtn.style.display='block';
+  };
+
+  // Checkout
+  checkoutBtn.onclick=()=>{
+    if(cart.length===0){ alert('Your cart is empty'); return; }
+    if(!buyerName.value || !buyerContact.value){ alert('Enter name & contact'); return; }
+    if(!paymentMethod.value){ alert('Select a payment method'); return; }
+    if(!userLocation){ alert('Pin your delivery location on the map.'); return; }
+
+    const order={
+      name:buyerName.value,
+      contact:buyerContact.value,
+      payment:paymentMethod.value,
+      items:cart,
+      total:totalPriceEl.textContent,
+      receipt:'',
+      location:userLocation
+    };
+
+    if(paymentMethod.value==='GCash' && gcashFile.files[0]){
+      const reader=new FileReader();
+      reader.onload=()=>{ order.receipt=reader.result; saveOrder(order); alert('Order placed!'); window.location.href='tracking.html'; };
+      reader.readAsDataURL(gcashFile.files[0]);
+    }else{
+      saveOrder(order); alert('Order placed!'); window.location.href='tracking.html';
+    }
+
+    cart=[]; saveCart(); renderCart();
+    buyerName.value=''; buyerContact.value=''; paymentMethod.value=''; paymentPopup.style.display='none';
+    codInfo.style.display='none'; gcashInfo.style.display='none';
+  };
+
+  function saveOrder(order){
+    const orders=JSON.parse(localStorage.getItem('orders'))||[];
+    orders.push(order);
+    localStorage.setItem('orders',JSON.stringify(orders));
+  }
+
+  renderCart();
+</script>
+</body>
+</html>
