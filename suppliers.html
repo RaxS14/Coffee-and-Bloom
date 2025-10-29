@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suppliers — COFFEE & BLOOM Admin</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+body, html {
+  height: 100%;
+  font-family:'Poppins',sans-serif;
+  background:#fff8f5 url('images/background.png') no-repeat center center;
+  background-size:cover;
+  color:#6b4226;
+  overflow: hidden;
+  display: flex;
+}
+.sidebar {
+  width:260px; background:#fff; border-right:1px solid #e0cbbf;
+  padding:2rem 1rem; display:flex; flex-direction:column; align-items:center;
+  box-shadow:2px 0 15px rgba(0,0,0,0.05); position:fixed; height:100%;
+}
+.sidebar img{ width:80px; height:80px; border-radius:50%; object-fit:cover; }
+.sidebar h2{ margin-top:0.5rem; font-size:1.3rem; color:#ff7043; }
+.sidebar p{ font-size:0.9rem; color:#999; margin-bottom:2rem; text-align:center; }
+.sidebar .nav{ list-style:none; width:100%; }
+.sidebar .nav li{ margin:0.3rem 0; }
+.sidebar .nav a{
+  display:flex; align-items:center; text-decoration:none; color:#6b4226;
+  padding:0.7rem 1rem; border-radius:10px; transition:0.3s;
+}
+.sidebar .nav a i{ margin-right:10px; font-size:1.2rem; }
+.sidebar .nav a.active, .sidebar .nav a:hover{
+  background:#ffe1d2; color:#ff7043; font-weight:600;
+}
+main{
+  flex:1; margin-left:260px; padding:2rem;
+  overflow-y:auto; max-height:100vh;
+}
+header{
+  background: linear-gradient(135deg,#FFCBA4,#FF9F7A);
+  color:#fff; padding:1rem 1.5rem;
+  border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  margin-bottom:2rem; display:flex; justify-content:space-between; align-items:center;
+}
+header h1{ font-size:1.5rem; }
+.inventory-container{
+  display:flex; flex-wrap:wrap; gap:1rem; justify-content:flex-start;
+  padding-bottom:2rem;
+}
+.card{
+  background:#fff; border-radius:20px;
+  padding:1rem; width:230px; box-shadow:0 10px 25px rgba(255,159,122,0.15);
+  display:flex; flex-direction:column; align-items:center; transition:0.3s;
+}
+.card:hover{ transform:translateY(-4px); box-shadow:0 15px 35px rgba(255,140,105,0.25); }
+.card img{ width:100%; height:160px; object-fit:cover; border-radius:12px; }
+.card h3{ margin:0.5rem 0; font-size:1rem; text-align:center; }
+.card p{ font-size:0.85rem; color:#666; text-align:center; margin:0.2rem 0; }
+.card a{ margin-top:0.5rem; text-decoration:none; color:#ff7043; font-weight:600; }
+@media(max-width:768px){
+  body{ flex-direction:column; }
+  .sidebar{ width:100%; flex-direction:row; justify-content:space-around; padding:1rem; }
+  main{ margin-left:0; padding:1rem; }
+  .card{ width:100%; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <img src="images/admin-avatar.png" alt="Admin Avatar">
+  <h2>Admin</h2>
+  <p>Administrator</p>
+  <ul class="nav">
+    <li><a href="admin.html"><i class="ri-dashboard-line"></i> Dashboard</a></li>
+    <li><a href="adminorder.html"><i class="ri-shopping-bag-3-line"></i> Orders</a></li>
+    <li><a href="inventory.html"><i class="ri-archive-2-line"></i> Inventory</a></li>
+    <li><a href="suppliers.html" class="active"><i class="ri-truck-line"></i> Suppliers</a></li>
+    <li><a href="reports.html"><i class="ri-bar-chart-2-line"></i> Reports</a></li>
+    <li><a href="#" id="logoutLink"><i class="ri-logout-circle-line"></i> Logout</a></li>
+  </ul>
+</aside>
+
+<main>
+  <header>
+    <h1>Suppliers</h1>
+  </header>
+  <div class="inventory-container" id="suppliersContainer"></div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  const container = document.getElementById('suppliersContainer');
+
+  const suppliers = [
+    { name:"Cheerman’s Flower Shop", img:"images/flowers.png", desc:"Fresh flowers, providing best quality for your arrangements.", link:"https://www.tiktok.com/@cheermans.flower?is_from_webapp=1&sender_device=pc" },
+    { name:"Coffee Bean - COFFEE GROUND PH", img:"images/coffee.png", desc:"Premium coffee beans for rich flavor.", link:"https://www.tiktok.com/@coffeegroundsph?is_from_webapp=1&sender_device=pc" },
+    { name:"LittleRetailPH - Matcha Powder", img:"images/matcha.png", desc:"High quality matcha powder for your drinks.", link:"https://www.tiktok.com/@littleretailph?is_from_webapp=1&sender_device=pc" },
+    { name:"OATSIDE Philippines - Milk (Oat Side)", img:"images/oatmilk.png", desc:"Organic oat milk, perfect for coffee and matcha.", link:"https://www.tiktok.com/@oatside.ph?is_from_webapp=1&sender_device=pc" },
+    { name:"Supply.metro - Flour", img:"images/flour.png", desc:"Top quality flour for cookies and pasta.", link:"https://www.tiktok.com/@supply.metro?is_from_webapp=1&sender_device=pc" },
+    { name:"Cups & Straws", img:"images/cups-straws.png", desc:"Reliable cups and straws for beverages.", link:"https://www.tiktok.com/@dpltrading?is_from_webapp=1&sender_device=pc"},
+    { name:"Other Essentials (Grocery store)", img:"images/grocery.png", desc:"All ingredients needed for your bakery and kitchen.", link:"#"},
+    { name:"Pasta & Other Essentials", img:"images/pasta.png", desc:"High quality pasta and ingredients for cooking.", link:"#"}
+  ];
+
+  suppliers.forEach(s=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    let content = `<h3>${s.name}</h3><p>${s.desc}</p>`;
+
+    // Only add image and "Visit Supplier" if link is valid
+    if(s.link !== "#") {
+      content = `<img src="${s.img}" alt="${s.name}">` + content;
+      content += `<a href="${s.link}" target="_blank">Visit Supplier</a>`;
+    }
+
+    card.innerHTML = content;
+    container.appendChild(card);
+  });
+
+  document.getElementById('logoutLink').addEventListener('click', e=>{
+    e.preventDefault();
+    localStorage.clear();
+    window.location.href='login.html';
+  });
+});
+</script>
+
+</body>
+</html>
